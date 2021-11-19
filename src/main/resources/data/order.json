@@ -1,0 +1,12 @@
+{
+  "orderType": "Order",
+  "account": "METRO Giper Ship To #016",
+  "contact": "Test",
+  "priceBook": "Default Pricebook",
+  "salesOrganization": "Default Sales Org",
+  "pricingProcedure": "Manual Discount (%) part of procedure",
+  "description": "Created by Automation",
+  "stage": "",
+  "totalPrice": "100",
+  "totalDiscount": "10"
+}
