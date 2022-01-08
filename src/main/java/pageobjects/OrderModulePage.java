@@ -2,24 +2,18 @@ package pageobjects;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.OrderDTO;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
-import java.util.List;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static dto.MapperDTO.orderDTO;
 
 public class OrderModulePage {
 
@@ -107,16 +101,5 @@ public class OrderModulePage {
     public boolean verifyThatToastMessageIsDisplayed() {
         SUCCESSTOASTBANNER.should(appear, Duration.ofSeconds(3000));
         return SUCCESSTOASTBANNER.isDisplayed();
-    }
-
-    public OrderDTO orderDTO() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        OrderDTO orderDTO = null;
-        try {
-            orderDTO = objectMapper.readValue(new File("src/main/resources/data/order.json"), OrderDTO.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return orderDTO;
     }
 }
