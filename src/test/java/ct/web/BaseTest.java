@@ -9,7 +9,7 @@ public class BaseTest {
 
     @BeforeEach
     void setUp() {
-        Selenide.open("https://power-nosoftware-2166-dev-ed.lightning.force.com/");
+        Selenide.open("https://saas-drive-8735-dev-ed.lightning.force.com/");
         WebDriverRunner.getWebDriver().manage().window().maximize();
     }
 

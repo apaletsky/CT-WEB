@@ -6,7 +6,5 @@
   "salesOrganization": "Default Sales Org",
   "pricingProcedure": "Manual Discount (%) part of procedure",
   "description": "Created by Automation",
-  "stage": "",
-  "totalPrice": "100",
-  "totalDiscount": "10"
+  "stage": ""
 }

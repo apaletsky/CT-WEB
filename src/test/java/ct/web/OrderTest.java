@@ -28,6 +28,7 @@ public class OrderTest extends BaseTest {
     @TmsLink("C53000")
     public void createOrder() {
         loginSteps.loginWithValidCredentials();
+        homeSteps.clickSwitchToLightning();
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
@@ -46,6 +47,7 @@ public class OrderTest extends BaseTest {
     @TmsLink("C52999")
     public void verifyOrderView() {
         loginSteps.loginWithValidCredentials();
+        homeSteps.clickSwitchToLightning();
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();

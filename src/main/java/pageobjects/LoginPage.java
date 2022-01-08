@@ -11,7 +11,7 @@ public class LoginPage {
     private final SelenideElement LOGINBUTTON = $("#Login");
 
 public void loginWithValidCredentials(){
-    $(USERNAME).sendKeys("test-k0v2r6uqa5gg@example.com");
+    $(USERNAME).sendKeys("test-za6bqfkrq3wa@example.com");
     $(PASSWORD).sendKeys("Enter123");
     $(LOGINBUTTON).click();
 }
