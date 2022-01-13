@@ -2,6 +2,7 @@ package pageobjects;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import dto.CredentionalDTO;
 import dto.OrderDTO;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -13,6 +14,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver;
+import static dto.MapperDTO.credentionalDTO;
 import static dto.MapperDTO.orderDTO;
 
 public class OrderModulePage {
@@ -38,6 +40,8 @@ public class OrderModulePage {
     private final SelenideElement SUCCESSTOASTBANNER = $x("//div[@data-key='success']");
     private final SelenideElement EDITCARTBUTTON = $x("//*[text()='Edit Cart']");
 
+    CredentionalDTO credentionalDTO = credentionalDTO();
+
     public boolean verifyThatOrderModulePageIsDisplayed() {
         TITLE.should(appear, Duration.ofSeconds(3000));
         return TITLE.isDisplayed();
@@ -48,7 +52,7 @@ public class OrderModulePage {
     }
 
     public void openCtOrdersTab() {
-        Selenide.open("https://saas-drive-8735-dev-ed.lightning.force.com/lightning/o/orders__Order__c/list?filterName=Recent");
+        Selenide.open(credentionalDTO.getCtOrderTab());
         /*ACCOUNTSTABCONTENT.shouldBe(Condition.visible);
         Selenide.sleep(2000);
         final JavascriptExecutor executor = getJavascriptExecutor();
