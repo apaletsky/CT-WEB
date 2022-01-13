@@ -73,7 +73,8 @@ public class OrderModulePage {
     }
 
     public void fillNewOrderView() {
-        OrderDTO orderDTO = orderDTO();
+        OrderDTO orderDTO = orderDTO(); //здесь создается экземпляр Order DTO, поля которого хранят в себе поля из Order.Json
+
         NEWCTORDERVIEW.shouldBe(visible, Duration.ofSeconds(2));
         ORDERTYPEFIELD.click();
         if(!ORDERTYPEFIELDORDER.isDisplayed()){
