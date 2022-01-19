@@ -1,17 +1,17 @@
 package pageobjects;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-
-import static com.codeborne.selenide.Condition.visible;
+import dto.ProductsDTO;
 
 import java.time.Duration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Selenide.$x;
-
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
+import static dto.MapperDTO.productsDTO;
 
 public class OrderDetailsPage {
 
@@ -19,15 +19,15 @@ public class OrderDetailsPage {
     private final SelenideElement SEARCHFIELD = $x("//*[@name='search']");
     private final SelenideElement BUTTONSPANEL = $x("//*[@class='slds-page-header__col-actions slds-col']");
     private final SelenideElement CATALOGSTAB = $x("//a[@data-label='CATALOGS']");
+
     private final SelenideElement ACCORDINGSUMMARY = $x("//*[@title='All Accounts. SPOONABLE YOGHURTS']");
     private final SelenideElement CATALOGDANISSIMO = $x("//*[@title='Danissimo']");
-    private final SelenideElement ACCORDINGCONTENT = $x("//*[@class='accordion__content']");
-
     private final SelenideElement CATALOGDANISSIMO105 = $x("//*[@title='105']");
-    private final SelenideElement CATALOGDANISSIMO105_prod1 = $x("//*[text()='DM SPOON YOG 105 CRNCH-MAR-MAN/plast cup']");
-    private final SelenideElement CATALOGDANISSIMO105_prod2 = $x("//*[text()='DM SPOON YOG 105 CHO FLAK/plast cup']");
-    private final SelenideElement CATALOGDANISSIMO105_prod3 = $x("//*[text()='DM SPOON YOG 105 CRUNCH/plast cup']");
-    private final SelenideElement CATALOGDANISSIMO105_prod4 = $x("//*[text()='DM SPOON YOG 105 CRNCH BER FLV/plast cup']");
+
+    private SelenideElement CATALOGDANISSIMO105_prod1;
+    private SelenideElement CATALOGDANISSIMO105_prod2;
+    private SelenideElement CATALOGDANISSIMO105_prod3;
+    private SelenideElement CATALOGDANISSIMO105_prod4;
 
     private final SelenideElement CATALOGDANISSIMO105_prod4_BACKGROUNDCOLOR = $x("//*[@class='child-product item-checked']");
 
@@ -40,13 +40,22 @@ public class OrderDetailsPage {
     // окно создания доставки
     private final SelenideElement ADDADDRESS = $x("//*[@name='deliveryAddress']");
     private final SelenideElement ADDDATE = $x("//*[@name='deliveryDate']");
-    private final SelenideElement BUTTONOK = $x("//*[@title='OK']");
+    private final SelenideElement OKBUTTON = $x("//*[@title='OK']");
 
     //элементы на странице заказа для валидации после добавления продуктов в закза
-    private String DELIVERYADDADDRESS;
+    private String DELIVERYADDRESS;
     private final SelenideElement PRODUCTNAME = $x("//*[text()='Product Name']");
-    private final SelenideElement DELIVERYADDRESS = $x(String.format("//*[@title='%s']",DELIVERYADDADDRESS));
-    //private final SelenideElement LISTPRICE =
+    private SelenideElement DELIVERYADDEDADDRESS;
+    private final SelenideElement DELIVERYADDEDDATE = $x("//*[@data-name='delivery_date_header']");
+    //использовала класс ElementsCollection из библиотеки selenide, тк надо хранить несколько элементов с одинаковым типом
+    // (используется общий,для всех элементов в списке локатор - не надо искать уникальный локатор для каждого элемента, в отличии от Selenide Element)
+    private final ElementsCollection ADDEDPRODUCTS = $$x("//*[@data-name='product']");
+    private final ElementsCollection QUANTITYOFADDEDPRODUCTS = $$x("//*[@data-name='dli']//input");
+    private final SelenideElement SAFEDRAFTBUTTON = $x("//*[text()='Save Draft']");
+    private final SelenideElement EXITBUTTON = $x("//*[@title='Exit']");
+
+    private final SelenideElement POPUP_AREYOUSURE = $x("//*[text()='All changes will be lost. Are you sure?']");
+    private final SelenideElement OKBUTTONONPOPUP = $x("//section/div/footer/lightning-button[1]/button");
 
 
     // метод CATALOGDANISSIMO105_prod4_BACKGROUNDCOLOR.getCssValue("background-color")
@@ -55,6 +64,7 @@ public class OrderDetailsPage {
     // чтобы не ждать секунду, можес не методос equals проверить совпадение цвета, а методом contains
     private final String YELLOWBACKGROUNDCOLOR = "250, 255, 143";
 
+    private ProductsDTO productsDTO = productsDTO();
 
     public boolean verifyThatOrderDetailsIsDisplayed() {
         ORDERDETAILS.should(visible, Duration.ofSeconds(3000));
@@ -72,10 +82,6 @@ public class OrderDetailsPage {
 
     public boolean verifyThatCatalogTabIsDisplayed() {
         return CATALOGSTAB.isDisplayed();
-    }
-
-    public boolean verifyThatOrderProductHierarchyIsDisplayed() {
-        return ACCORDINGSUMMARY.isDisplayed();
     }
 
     public void clickOrderProductHierarchy() {
@@ -99,6 +105,16 @@ public class OrderDetailsPage {
     }
 
     public boolean verifyThatProductsInCatalogDanissimo105IsDisplayed() {
+        //  https://javarush.ru/groups/posts/for-v-java
+        //цикл, исполььзуется здесь,чтобы избежать написания одинаковых действий (вывод интерфейс продуктов из JSON)
+//        for(int i = 0; i<productsDTO.getProducts().size(); i++){
+//            System.out.println("getProduct from DTO №" + i + " = " + productsDTO.getProducts().get(i));
+//        }
+        CATALOGDANISSIMO105_prod1 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(0))).shouldBe(visible, Duration.ofSeconds(3000));
+        CATALOGDANISSIMO105_prod2 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(1))).shouldBe(visible, Duration.ofSeconds(3000));
+        CATALOGDANISSIMO105_prod3 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(2))).shouldBe(visible, Duration.ofSeconds(3000));
+        CATALOGDANISSIMO105_prod4 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(3))).shouldBe(visible, Duration.ofSeconds(3000));
+
         return CATALOGDANISSIMO105_prod1.isDisplayed()
                 && CATALOGDANISSIMO105_prod2.isDisplayed()
                 && CATALOGDANISSIMO105_prod3.isDisplayed()
@@ -149,12 +165,14 @@ public class OrderDetailsPage {
     }
 
     public void clickAddButton(){
+        ADDBUTTON.should(visible, Duration.ofSeconds(3000));
         ADDBUTTON.click();
     }
 
     public boolean verifyThatAddressPopulated(){
-        //System.out.println("****** = " + ADDADDRESS.getText());
-        DELIVERYADDADDRESS = ADDADDRESS.getText();
+//        System.out.println("****** = " + ADDADDRESS.getText());
+        DELIVERYADDRESS = ADDADDRESS.getText();
+//        System.out.println("DELIVERYADDADDRESS = " + DELIVERYADDRESS);
         return ADDADDRESS.getText().length() != 0;
     }
 
@@ -162,30 +180,111 @@ public class OrderDetailsPage {
         // getText() не работает на полях с типом Input.
         // вместо этого есть метод getAttribute
         // https://stackoverflow.com/questions/36202689/selenium-webdriver-get-text-from-input-field
-        System.out.println("****** = " + ADDDATE.getAttribute("value"));
+//        System.out.println("****** = " + ADDDATE.getAttribute("value"));
 
         // How Current day: https://www.javatpoint.com/java-get-current-date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now));
-        System.out.println("CompareDate = " + ADDDATE.getAttribute("value").equals(dtf.format(now)));
+//        System.out.println(dtf.format(now));
+//        System.out.println("CompareDate = " + ADDDATE.getAttribute("value").equals(dtf.format(now)));
         return ADDDATE.getAttribute("value").equals(dtf.format(now));
     }
 
     public void clickButtonOK(){
-        BUTTONOK.click();
+        OKBUTTON.should(visible, Duration.ofSeconds(3000));
+        OKBUTTON.click();
     }
 
     public boolean verifyThatProductNameIsDisplayed() {
         PRODUCTNAME.should(visible,Duration.ofSeconds(3000));
-        System.out.println("PRODUCTNAME.isDisplayed() = "+ PRODUCTNAME.isDisplayed());
+//        System.out.println("PRODUCTNAME.isDisplayed() = "+ PRODUCTNAME.isDisplayed());
         return PRODUCTNAME.isDisplayed();
     }
 
-    public boolean verifyThatDeliveryAddressIsDisplayed () {
-        DELIVERYADDRESS.should(visible,Duration.ofSeconds(3000));
-        System.out.println("DELIVERYADDRESS.isDisplayed() = "+ DELIVERYADDRESS.isDisplayed());
-        return DELIVERYADDRESS.isDisplayed();
+    public boolean verifyThatDeliveryAddressIsDisplayedAndCorrect() {
+        DELIVERYADDEDADDRESS = $x(String.format("//*[@title='%s']", DELIVERYADDRESS)).shouldBe(visible, Duration.ofSeconds(3000));
+//        System.out.println("DELIVERYADDADDRESS from verifyThatDeliveryAddressIsDisplayed = " + DELIVERYADDRESS);
+//        System.out.println("DELIVERYADDRESS.isDisplayed() = " + DELIVERYADDEDADDRESS.isDisplayed());
+//        System.out.println("DELIVERYADDADDRESS.equals(DELIVERYADDRESS.getText()) = " + DELIVERYADDRESS.equals(DELIVERYADDEDADDRESS.getText()));
+        return DELIVERYADDRESS.equals(DELIVERYADDEDADDRESS.getText());
     }
 
+    public boolean verifyThatDateIsDisplayedAndCorrect() {
+        DELIVERYADDEDDATE.shouldBe(visible, Duration.ofSeconds(3000));
+//        System.out.println("DELIVERYADDEDDATE.getText() = " + DELIVERYADDEDDATE.getText());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+//        System.out.println("dtf.format(now) = " + dtf.format(now));
+        return DELIVERYADDEDDATE.getText().equals(dtf.format(now));
+    }
+
+    public boolean verifyThatProductsAreAdded(){
+//        boolean allProductAreAdded = true;
+//        for(int i = 0; i<ADDEDPRODUCTS.size(); i++){
+//            System.out.println("getProduct from ADDEDPRODUCTS №" + i + " = " + ADDEDPRODUCTS.get(i).getText());
+//            System.out.println(ADDEDPRODUCTS.get(i).getText().equals(productsDTO.getProducts().get(i)));
+//            if(!ADDEDPRODUCTS.get(i).getText().equals(productsDTO.getProducts().get(i))){
+//                allProductAreAdded = false;
+//            }
+//        }
+//                return allProductAreAdded;
+//        System.out.println("ADDEDPRODUCTS.size() = " + ADDEDPRODUCTS.size());
+//        System.out.println("productsDTO.getProducts().size() = " + productsDTO.getProducts().size());
+
+        return ADDEDPRODUCTS.size() == productsDTO.getProducts().size();
+    }
+
+    public boolean verifyThatQuantityOfAddedProductsIsZero(){
+//        for (int i = 0; i<QUANTITYOFADDEDPRODUCTS.size(); i++){
+//            System.out.println ("QUANTITYOFADDEDPRODUCTS" + QUANTITYOFADDEDPRODUCTS.get(i).getAttribute("value"));
+//            QUANTITYOFADDEDPRODUCTS.get(i).getAttribute("value");
+//            if (QUANTITYOFADDEDPRODUCTS.get(0).getAttribute("value").equals("0")){
+//            }
+//        }
+        return QUANTITYOFADDEDPRODUCTS.get(0).getAttribute("value").equals("0")
+                && QUANTITYOFADDEDPRODUCTS.get(1).getAttribute("value").equals("0")
+                && QUANTITYOFADDEDPRODUCTS.get(2).getAttribute("value").equals("0")
+                && QUANTITYOFADDEDPRODUCTS.get(3).getAttribute("value").equals("0");
+    }
+
+    public void setQuantityValuesForAddedProducts(){
+        QUANTITYOFADDEDPRODUCTS.get(0).setValue("5");
+        QUANTITYOFADDEDPRODUCTS.get(1).click();
+        QUANTITYOFADDEDPRODUCTS.get(1).setValue("10");
+        QUANTITYOFADDEDPRODUCTS.get(2).click();
+        QUANTITYOFADDEDPRODUCTS.get(2).setValue("15");
+        QUANTITYOFADDEDPRODUCTS.get(3).click();
+        QUANTITYOFADDEDPRODUCTS.get(3).setValue("20");
+        QUANTITYOFADDEDPRODUCTS.get(0).click();
+    }
+
+    public boolean verifyThatQuantityOfAddedProductsIsChanged(){
+        return QUANTITYOFADDEDPRODUCTS.get(0).getAttribute("value").equals("5")
+                && QUANTITYOFADDEDPRODUCTS.get(1).getAttribute("value").equals("10")
+                && QUANTITYOFADDEDPRODUCTS.get(2).getAttribute("value").equals("15")
+                && QUANTITYOFADDEDPRODUCTS.get(3).getAttribute("value").equals("20");
+    }
+
+    public void clickSafeDraftButton(){
+        //System.out.println("SAFEDRAFTBUTTON.isEnabled() = " + SAFEDRAFTBUTTON.isEnabled());
+        SAFEDRAFTBUTTON.shouldBe(enabled, Duration.ofSeconds(3000));
+        //System.out.println("SAFEDRAFTBUTTON.isEnabled() = " + SAFEDRAFTBUTTON.isEnabled());
+        SAFEDRAFTBUTTON.click();
+    }
+
+    public void clickExitButton(){
+        EXITBUTTON.shouldBe(visible, Duration.ofSeconds(3000));
+        EXITBUTTON.click();
+    }
+
+    public boolean verifyThatPopUpForVerificationIsDisplayed(){
+        POPUP_AREYOUSURE.should(visible,Duration.ofSeconds(3000));
+        OKBUTTONONPOPUP.should(visible, Duration.ofSeconds(3000));
+        return POPUP_AREYOUSURE.isDisplayed() && OKBUTTONONPOPUP.isDisplayed();
+    }
+
+    public void clickOkButtonOnVerificationPopUp(){
+        OKBUTTONONPOPUP.shouldBe(visible, Duration.ofSeconds(3000));
+        OKBUTTONONPOPUP.click();
+    }
 }
