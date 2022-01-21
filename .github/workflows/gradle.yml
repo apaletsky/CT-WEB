@@ -6,9 +6,13 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
 name: CT-WEB workflow
+
 on:
-  schedule:
-    - cron: '0 20 * * *' # every 20:00 UTC (23:00 MSK)
+  push:
+    branches-ignore:
+      - '!master' # Push events to branches matching allure-report
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   tests:
