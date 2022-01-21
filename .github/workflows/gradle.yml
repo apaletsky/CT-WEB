@@ -14,6 +14,17 @@ on:
     paths-ignore:
       - 'docs/**'
 
+  workflow_dispatch:
+    inputs:
+      appName:
+        default: CT-WEB workflow
+        required: true
+        description: Project name
+      arguments:
+        required: false
+        description: Additional gradle arguments
+        default: ""
+
 jobs:
   tests:
     name: RUN CT-WEB TESTS
