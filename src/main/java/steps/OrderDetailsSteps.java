@@ -2,6 +2,7 @@ package steps;
 
 import io.qameta.allure.Step;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Assertions;
 import pageobjects.OrderDetailsPage;
 
 
@@ -33,7 +34,80 @@ public class OrderDetailsSteps {
             a.assertThat(orderDetailsPage.verifyThatTotalDiscountIsDisplayed())
                     .isTrue();
         });
-
     }
 
+    @Step("Click \"All Accounts. SPOONABLE YOGHURTS\" line")
+    public void clickOrderProductHierarchy(){
+        orderDetailsPage.clickOrderProductHierarchy();
+    }
+
+    @Step("Check that catalog Danissimo Displayed")
+    public void verifyThatCatalogDanissimoIsDisplayed(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatCatalogDanissimoIsDisplayed());
+    }
+
+    @Step("Click on Danissimo Catalog")
+    public void clickCatalogDanissimo(){
+        orderDetailsPage.clickCatalogDanissimo();
+    }
+
+    @Step("Check that under Danissimo exist Catalog #105")
+    public void verifyThatCatalogDanissimo105IsDisplayed(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatCatalogDanissimo105IsDisplayed());
+    }
+
+    @Step("Click on Catalog #105")
+    public void clickCatalogDanissimo105(){
+        orderDetailsPage.clickCatalogDanissimo105();
+    }
+
+    @Step("Check that under Catalog #105 exist Products")
+    public void verifyThatProductsInCatalogDanissimo105IsDisplayed(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatProductsInCatalogDanissimo105IsDisplayed());
+    }
+
+    @Step("Add 4 Products to the Cart")
+    public void addProductsFromCatalogDanissimo105(){
+        orderDetailsPage.addProductsFromCatalogDanissimo105();
+    }
+
+    @Step("Check that 4-th product has yellow Background Color")
+    public void verifyProd4BackgroundColorisYellow(){
+        Assertions.assertTrue(orderDetailsPage.verifyProd4BackgroundColorisYellow());
+    }
+
+    @Step("Verify that after adding 4 products Add Button contain number of added products \"4\"")
+    public void verifyThatAddButtonContainNumberOfAddedProduct(){
+        Assertions.assertTrue(orderDetailsPage.getAddButtonText().contains("4"));
+    }
+
+    @Step("Click Add Button")
+    public void clickAddButton(){
+        orderDetailsPage.clickAddButton();
+    }
+
+    @Step
+    public void verifyThatAddressPopulated(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatAddressPopulated());
+    }
+
+    @Step
+    public void verifyThatDatePopulatedAsToday(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatDatePopulatedAsToday());
+    }
+
+    @Step
+    public void clickOkButton(){
+        orderDetailsPage.clickButtonOK();
+    }
+
+    @Step
+    public void verifyThatProductNameisDisplayed(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatProductNameIsDisplayed());
+    }
+
+    @Step
+    public void verifyThatDeliveryAddressIsDisplayed(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatDeliveryAddressIsDisplayed());
+    }
 }
