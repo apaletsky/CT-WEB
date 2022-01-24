@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class OrderDTO {
 
-    @JsonProperty("orderType")
-    String orderType;
+    @JsonProperty("orderType") //поля из Order.json
+    String orderType; // поля объекта из PagesObject
 
     @JsonProperty("account")
     String account;
@@ -36,6 +36,7 @@ public class OrderDTO {
     @JsonProperty("totalDiscount")
     String totalDiscount;
 
+    // конструктор OrderDTO метода OrderDTO (не используется, потому что не вызывается, не вызывается, потому что используется статичный метод Mapper DTO)
     public OrderDTO(String orderType, String account, String contact, String priceBook, String salesOrganization, String pricingProcedure, String description, String stage, String totalPrice, String totalDiscount) {
         this.orderType = orderType;
         this.account = account;
@@ -52,7 +53,7 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-
+// get и set используются для реализации принципа инкапсуляцииб
     public String getOrderType() {
         return orderType;
     }
