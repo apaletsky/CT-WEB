@@ -50,7 +50,7 @@ public class OrderModulePage {
     }
 
     public void openCtOrdersTab() {
-        Selenide.open("https://power-nosoftware-2166-dev-ed.lightning.force.com/lightning/o/orders__Order__c/list?filterName=Recent");
+        Selenide.open("https://saas-drive-8735-dev-ed.lightning.force.com/lightning/o/orders__Order__c/list?filterName=Recent");
         /*ACCOUNTSTABCONTENT.shouldBe(Condition.visible);
         Selenide.sleep(2000);
         final JavascriptExecutor executor = getJavascriptExecutor();

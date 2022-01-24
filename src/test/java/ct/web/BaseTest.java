@@ -4,12 +4,15 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+
+@ExtendWith(MySelenoidSetup.class)
 public class BaseTest {
 
     @BeforeEach
     void setUp() {
-        Selenide.open("https://power-nosoftware-2166-dev-ed.lightning.force.com/");
+        Selenide.open("https://saas-drive-8735-dev-ed.lightning.force.com/");
         WebDriverRunner.getWebDriver().manage().window().maximize();
     }
 
