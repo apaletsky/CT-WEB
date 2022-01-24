@@ -18,8 +18,6 @@ jobs:
           java-version: '11'
       - name: Run tests in Gradle
         run: ./gradlew clean test -Dselenide.headless=true --info --rerun-tasks
-      - name: Run tests in Maven
-        run: ./mvnw clean test -Dselenide.headless=true
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
