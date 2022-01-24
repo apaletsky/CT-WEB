@@ -1,11 +1,8 @@
 name: CT-WEB workflow
 
 on:
-  push:
-    branches-ignore:
-      - '!master' # Push events to branches matching allure-report
-    paths-ignore:
-      - 'docs/**'
+  schedule:
+    - cron: '0 20 * * *' # every 20:00 UTC (23:00 MSK)
 
   workflow_dispatch:
     inputs:

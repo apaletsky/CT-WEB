@@ -2,6 +2,7 @@ package steps;
 
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
+import pageobjects.OrderDetailsPage;
 import pageobjects.OrderModulePage;
 
 public class OrderModuleSteps {

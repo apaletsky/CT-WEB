@@ -28,6 +28,7 @@ public class OrderTest extends BaseTest {
     @TmsLink("C53000")
     public void createOrder() {
         loginSteps.loginWithValidCredentials();
+        homeSteps.clickSwitchToLightning();
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
@@ -46,6 +47,7 @@ public class OrderTest extends BaseTest {
     @TmsLink("C52999")
     public void verifyOrderView() {
         loginSteps.loginWithValidCredentials();
+        homeSteps.clickSwitchToLightning();
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
@@ -56,5 +58,48 @@ public class OrderTest extends BaseTest {
         orderModuleSteps.verifyThatToastMessageIsDisplayed();
         orderModuleSteps.clickEditCartButton();
         orderDetailsSteps.verifyThatOrderDetailsElementsIsDisplayed();
+    }
+
+    @Story("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
+    @Description("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
+    @DisplayName("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    @TmsLink("C53575")
+    public void verifyProductAndDeliveryAdditionWithOLIAndDLICreation(){
+        loginSteps.loginWithValidCredentials();
+        homeSteps.clickSwitchToLightning();
+        homeSteps.verifyThatHomepageIsDisplayed();
+        homeSteps.openApplication("Order M");
+        orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
+        orderModuleSteps.goToOrdersTab();
+        orderModuleSteps.clickNewButton();
+        orderModuleSteps.verifyThatNewOrderViewIsDisplayed();
+        orderModuleSteps.fillNewOrderView();
+        orderModuleSteps.verifyThatToastMessageIsDisplayed();
+        orderModuleSteps.clickEditCartButton();
+        orderDetailsSteps.verifyThatOrderDetailsElementsIsDisplayed();
+        orderDetailsSteps.clickOrderProductHierarchy();
+        orderDetailsSteps.verifyThatCatalogDanissimoIsDisplayed();
+        orderDetailsSteps.clickCatalogDanissimo();
+        orderDetailsSteps.verifyThatCatalogDanissimo105IsDisplayed();
+        orderDetailsSteps.clickCatalogDanissimo105();
+        orderDetailsSteps.verifyThatProductsInCatalogDanissimo105IsDisplayed();
+        orderDetailsSteps.addProductsFromCatalogDanissimo105();
+        orderDetailsSteps.verifyProd4BackgroundColorisYellow();
+        orderDetailsSteps.verifyThatAddButtonContainNumberOfAddedProduct();
+        orderDetailsSteps.clickAddButton();
+        orderDetailsSteps.verifyThatAddressPopulated();
+        orderDetailsSteps.verifyThatDatePopulatedAsToday();
+        orderDetailsSteps.clickOkButton();
+        orderDetailsSteps.verifyThatProductNameisDisplayed();
+        //orderDetailsSteps.verifyThatDeliveryAddressIsDisplayed();
+        // проблема с шагом из-за того что  в поле дата/адрес в хедере страницы заказа для адреса используется проверка isDisplayed,
+        // а сам адрес не помещается полностью, соответственно не отображается
+/*
+1. убрать проверку на конкретные продукты - вместо этого сделать цикл на добавление 4-х верхних продуктов
+2. добавить проверку на выделение желтым каждого добавленного продукта
+3. продолжить тест с 41-42 шага (https://ctm.testrail.io/index.php?/cases/view/53575&group_by=cases:section_id&group_order=asc&display_deleted_cases=0&group_id=6518)
+*/
     }
 }

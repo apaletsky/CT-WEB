@@ -2,13 +2,11 @@ package pageobjects;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import dto.CredentionalDTO;
 import dto.OrderDTO;
 import org.openqa.selenium.JavascriptExecutor;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.appear;
@@ -16,6 +14,8 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver;
+import static dto.MapperDTO.credentionalDTO;
+import static dto.MapperDTO.orderDTO;
 
 public class OrderModulePage {
 
@@ -27,7 +27,7 @@ public class OrderModulePage {
 
 
     private final SelenideElement ORDERTYPEFIELD = $x("//*[text()='Order Type']/following-sibling::* | //*[@class='slds-form-element_stacked slds-form-element slds-has-error']//input");
-    private final SelenideElement ORDERTYPEDROPDOWNLIST = $x("//*[@class=\"slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-dropdown_left slds-dropdown_length-with-icon-7\"]");
+    private final SelenideElement ORDERTYPEFIELDORDER = $x("//span[@title='Order']");
     private final SelenideElement ACCOUNTFIELD = $x("//*[@placeholder=\"Search Accounts...\"]");
     private final SelenideElement CONTACTFIELD = $x("//*[@placeholder=\"Search Contacts...\"]");
     private final SelenideElement PRICEBOOKFIELD = $x("//*[@placeholder=\"Search CT Price Books...\"]");
@@ -40,6 +40,8 @@ public class OrderModulePage {
     private final SelenideElement SUCCESSTOASTBANNER = $x("//div[@data-key='success']");
     private final SelenideElement EDITCARTBUTTON = $x("//*[text()='Edit Cart']");
 
+    CredentionalDTO credentionalDTO = credentionalDTO();
+
     public boolean verifyThatOrderModulePageIsDisplayed() {
         TITLE.should(appear, Duration.ofSeconds(3000));
         return TITLE.isDisplayed();
@@ -50,7 +52,7 @@ public class OrderModulePage {
     }
 
     public void openCtOrdersTab() {
-        Selenide.open("https://saas-drive-8735-dev-ed.lightning.force.com/lightning/o/orders__Order__c/list?filterName=Recent");
+        Selenide.open(credentionalDTO.getCtOrderTab());
         /*ACCOUNTSTABCONTENT.shouldBe(Condition.visible);
         Selenide.sleep(2000);
         final JavascriptExecutor executor = getJavascriptExecutor();
@@ -71,50 +73,38 @@ public class OrderModulePage {
     }
 
     public void fillNewOrderView() {
-        OrderDTO orderDTO = orderDTO();
-        //NEWCTORDERVIEW.shouldBe(visible, Duration.ofSeconds(2));
-        ORDERTYPEFIELD.click();
-        //ORDERTYPEDROPDOWNLIST.shouldBe(visible, Duration.ofSeconds(2));
-        $x(String.format("//*[@title='%s']", orderDTO.getOrderType())).should(visible, Duration.ofSeconds(3000)).click();
+        OrderDTO orderDTO = orderDTO(); //здесь создается экземпляр Order DTO, поля которого хранят в себе поля из Order.Json
 
-        ACCOUNTFIELD.click();
+        NEWCTORDERVIEW.shouldBe(visible, Duration.ofSeconds(2));
+        ORDERTYPEFIELD.click();
+        if(!ORDERTYPEFIELDORDER.isDisplayed()){
+            ORDERTYPEFIELD.click();
+        }
+        ORDERTYPEFIELDORDER.shouldBe(visible, Duration.ofSeconds(3));
+        ORDERTYPEFIELDORDER.click();
+
         ACCOUNTFIELD.sendKeys(orderDTO.getAccount());
+        ACCOUNTFIELD.click();
         $x(String.format("//*[@class='slds-listbox__option-text slds-listbox__option-text_entity']//*[@title='%s']", orderDTO.getAccount())).shouldBe(visible, Duration.ofSeconds(3000)).click();
 
-        //CONTACTFIELD.click();
-        //CONTACTFIELD.sendKeys(orderDTO.getContact());
-
-        PRICEBOOKFIELD.click();
         PRICEBOOKFIELD.sendKeys(orderDTO.getPriceBook());
+        PRICEBOOKFIELD.click();
         $x(String.format("//*[@title='%s']", orderDTO.getPriceBook())).shouldBe(visible, Duration.ofSeconds(3000)).click();
 
-        SALESORGFIELD.click();
         SALESORGFIELD.sendKeys(orderDTO.getSalesOrganization());
+        SALESORGFIELD.click();
         $x(String.format("//*[@class='slds-listbox__option-text slds-listbox__option-text_entity']//*[@title='%s']", orderDTO.getSalesOrganization())).shouldBe(visible, Duration.ofSeconds(3000)).click();
 
-        PRICINGPROCEDURESFIELD.click();
         PRICINGPROCEDURESFIELD.sendKeys(orderDTO.getPricingProcedure());
+        PRICINGPROCEDURESFIELD.click();
         $x(String.format("//*[@title='%s']", orderDTO.getPricingProcedure())).shouldBe(visible, Duration.ofSeconds(3000)).click();
 
         DESCRIPTION.sendKeys(orderDTO().getDescription());
-        TOTALPRICE.sendKeys(orderDTO().getTotalPrice());
-        TOTALDISCOUNT.sendKeys(orderDTO().getTotalDiscount());
         SAVEBUTTON.click();
     }
 
     public boolean verifyThatToastMessageIsDisplayed() {
         SUCCESSTOASTBANNER.should(appear, Duration.ofSeconds(3000));
         return SUCCESSTOASTBANNER.isDisplayed();
-    }
-
-    public OrderDTO orderDTO() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        OrderDTO orderDTO = null;
-        try {
-            orderDTO = objectMapper.readValue(new File("src/main/resources/data/order.json"), OrderDTO.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return orderDTO;
     }
 }
