@@ -1,20 +1,12 @@
-name: CT-WEB workflow
 
+name: Run tests
 on:
-  schedule:
-    - cron: '0 20 * * *' # every 20:00 UTC (23:00 MSK)
-
-  workflow_dispatch:
-    inputs:
-      appName:
-        default: CT-WEB workflow
-        required: true
-        description: Project name
-      arguments:
-        required: false
-        description: Additional gradle arguments
-        default: ""
-
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
 jobs:
   run-tests-job:
     runs-on: ubuntu-latest
