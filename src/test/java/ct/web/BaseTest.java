@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import static dto.MapperDTO.credentionalDTO;
 
+
+@ExtendWith(MySelenoidSetup.class)
 public class BaseTest {
     CredentionalDTO credentionalDTO = credentionalDTO();
 
