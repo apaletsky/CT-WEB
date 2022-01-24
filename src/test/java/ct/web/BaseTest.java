@@ -5,6 +5,8 @@ import com.codeborne.selenide.WebDriverRunner;
 import dto.CredentionalDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import static dto.MapperDTO.credentionalDTO;
 
 
