@@ -7,6 +7,18 @@ on:
   pull_request:
     branches:
       - '*'
+      
+  workflow_dispatch:
+    inputs:
+      appName:
+        default: CT-WEB workflow
+        required: true
+        description: Project name
+      arguments:
+        required: false
+        description: Additional gradle arguments
+        default: ""
+      
 jobs:
   run-tests-job:
     runs-on: ubuntu-latest
