@@ -35,7 +35,7 @@ jobs:
       - name: Run tests in Gradle
         run: ./gradlew clean test -Dselenide.headless=true --info --rerun-tasks
       - uses: actions/upload-artifact@v2
-        if: failure()
+        if: always()
         with:
           name: test-report
           path: build/reports/
