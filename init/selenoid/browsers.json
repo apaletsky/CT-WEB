@@ -2,9 +2,9 @@
   "chrome": {
     "default": "97.0",
     "versions": {
-      "75.0": {
+      "97.0": {
         "env" : ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
-        "image": "selenoid/vnc:chrome_97.0",
+        "image": "selenoid/vnc_chrome:97.0",
         "tmpfs": {"/tmp": "size=512m"},
         "hosts": ["x01.aidata.io:127.0.0.1"],
         "port": "4444",
@@ -12,7 +12,7 @@
       },
       "96.0": {
         "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
-        "image": "selenoid/vnc:chrome_96.0",
+        "image": "selenoid/vnc_chrome:96.0",
         "tmpfs": {"/tmp": "size=512m"},
         "hosts": ["x01.aidata.io:127.0.0.1"],
         "hostsEntries": ["example.com:192.168.0.1"],
