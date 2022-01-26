@@ -41,6 +41,8 @@ public class HomePage {
         String fullLocator = format((("//*[text()='%s']")), appName);
         $x(fullLocator).click();
     }
+
+
 }
 
 
