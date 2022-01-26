@@ -12,9 +12,8 @@ public class MySelenoidSetup implements BeforeAllCallback {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", "chrome");
         capabilities.setCapability("browserVersion", "96.0");
-        capabilities.setCapability("browserSize", "1366x768");
         capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", false);
+        capabilities.setCapability("enableVideo", true);
 
         Configuration.browserCapabilities = capabilities;
         Configuration.remote = "http://localhost:4444/wd/hub";
