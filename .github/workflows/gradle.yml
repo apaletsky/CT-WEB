@@ -67,6 +67,6 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_CHANNEL: '#ui-tests'
+          SLACK_CHANNEL: '#web-tests'
           SLACK_TITLE: "${{ env.GITHUB_WORKFLOW }} run #${{ env.GITHUB_RUN_NUMBER }}"
           SLACK_MESSAGE: "See report ${{ env.REPORT_URL}}"
