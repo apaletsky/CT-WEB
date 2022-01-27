@@ -1,4 +1,3 @@
-
 name: Run tests
 on:
   push:
@@ -7,7 +6,7 @@ on:
   pull_request:
     branches:
       - '*'
-      
+
   workflow_dispatch:
     inputs:
       appName:
@@ -18,7 +17,7 @@ on:
         required: false
         description: Additional gradle arguments
         default: ""
-      
+
 jobs:
   run-tests-job:
     runs-on: ubuntu-latest
@@ -28,7 +27,7 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
- 
+
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
@@ -39,3 +38,35 @@ jobs:
         with:
           name: test-report
           path: build/reports/
+
+
+      - name: configure AWS client
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.S3_REGION }}
+
+      - name: download history
+        run: mkdir -p build/allure-results && .github/download_history.sh build/allure-results
+        if: always()
+
+
+      - name: generate allure report locally
+        id: gen_report
+        if: always()
+        run: ./gradlew allureReport
+
+      - name: upload report to S3
+        if: always()
+        run: ./.github/upload_results.sh build/reports/allure-report
+
+
+      - name: report to slack
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_CHANNEL: '#ui-tests'
+          SLACK_TITLE: "${{ env.GITHUB_WORKFLOW }} run #${{ env.GITHUB_RUN_NUMBER }}"
+          SLACK_MESSAGE: "See report ${{ env.REPORT_URL}}"
