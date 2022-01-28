@@ -41,14 +41,14 @@ public class OrderModulePage {
     //https://www.scientecheasy.com/2019/08/xpath-axes.html/   - хорошее пояснение про переходы в xpath по дереву элементов
     private final SelenideElement STAGEFIELD = $x("//*[text()=\"Stage\"]//parent::div//following-sibling::div//child::lightning-formatted-text");
     private final String ONHOLD = "On-Hold";
-    private final ElementsCollection RELATEDLISTSOLI = $$x("//*[@aria-label='Order Line Items']/tbody/tr");
-    private final ElementsCollection RELATEDLISTDELIVERY = $$x("//*[@aria-label='Deliveries']/tbody/tr");
+    private final ElementsCollection RELATEDLISTSOLI = $$x("//*[@aria-label='Order Line Item #']//ancestor::table//tbody//tr");
+    private final ElementsCollection RELATEDLISTDELIVERY = $$x("//*[@aria-label='Delivery #']//ancestor::table//tbody//tr");
     private final SelenideElement FOOTER = $x("//*[@data-component-id='force_relatedListContainer']");
 
     CredentionalDTO credentionalDTO = credentionalDTO();
 
     public boolean verifyThatOrderModulePageIsDisplayed() {
-        TITLE.should(appear, Duration.ofSeconds(3000));
+        TITLE.should(appear, Duration.ofSeconds(60));
         return TITLE.isDisplayed();
     }
 
@@ -61,17 +61,17 @@ public class OrderModulePage {
     }
 
     public void clickNewButton() {
-        NEWBUTTON.should(visible, Duration.ofSeconds(3000));
+        NEWBUTTON.should(visible, Duration.ofSeconds(60));
         NEWBUTTON.click();
     }
 
     public void clickEditCartButton() {
-        EDITCARTBUTTON.should(visible, Duration.ofSeconds(3000));
+        EDITCARTBUTTON.should(visible, Duration.ofSeconds(60));
         EDITCARTBUTTON.click();
     }
 
     public boolean verifyThatNewOrderViewIsDisplayed() {
-        NEWCTORDERVIEW.should(appear, Duration.ofSeconds(3000));
+        NEWCTORDERVIEW.should(appear, Duration.ofSeconds(60));
         return NEWCTORDERVIEW.isDisplayed();
     }
 
@@ -85,7 +85,7 @@ public class OrderModulePage {
         if(COMPLETETHISFIELDMESSAGE.isDisplayed()){
             ORDERTYPEFIELD.click();
         }
-        ORDERTYPEFIELDORDER.shouldBe(visible, Duration.ofSeconds(3000));
+        ORDERTYPEFIELDORDER.shouldBe(visible, Duration.ofSeconds(60));
         ORDERTYPEFIELDORDER.click();
 
         ACCOUNTFIELD.sendKeys(orderDTO.getAccount()); //sendKeys здесь нужен потому что берем значение из поля
@@ -98,7 +98,7 @@ public class OrderModulePage {
         if(COMPLETETHISFIELDMESSAGE.isDisplayed()){
             PRICEBOOKFIELD.click();
         }
-        $x(String.format("//*[@title='%s']", orderDTO.getPriceBook())).shouldBe(visible, Duration.ofSeconds(3000)).click();
+        $x(String.format("//*[@title='%s']", orderDTO.getPriceBook())).shouldBe(visible, Duration.ofSeconds(60)).click();
 
         SALESORGFIELD.sendKeys(orderDTO.getSalesOrganization());
         try {
@@ -116,25 +116,25 @@ public class OrderModulePage {
         $x(String.format("//*[@class='slds-listbox__option-text slds-listbox__option-text_entity']//*[@title='%s']", orderDTO.getSalesOrganization())).shouldBe(visible, Duration.ofSeconds(3000)).click();
 
         PRICINGPROCEDURESFIELD.sendKeys(orderDTO.getPricingProcedure());
-        $x(String.format("//*[@title='%s']", orderDTO.getPricingProcedure())).shouldBe(visible, Duration.ofSeconds(3000)).click();
+        $x(String.format("//*[@title='%s']", orderDTO.getPricingProcedure())).shouldBe(visible, Duration.ofSeconds(60)).click();
 
         DESCRIPTION.sendKeys(orderDTO().getDescription());
         SAVEBUTTON.click();
     }
 
     public boolean verifyThatToastMessageIsDisplayed() {
-        SUCCESSTOASTBANNER.should(appear, Duration.ofSeconds(3000));
+        SUCCESSTOASTBANNER.should(appear, Duration.ofSeconds(60));
         return SUCCESSTOASTBANNER.isDisplayed();
     }
 
     public boolean verifyThatStageFieldIsOnHold() {
-        STAGEFIELD.should(visible, Duration.ofSeconds(3000));
+        STAGEFIELD.should(visible, Duration.ofSeconds(60));
         return STAGEFIELD.getText().equals(ONHOLD);
     }
 
     public boolean verifyThatRelatedListsHaveCountsOfAddedItems(){
         FOOTER.scrollIntoView(true);
-        RELATEDLISTDELIVERY.get(0).should(appear,Duration.ofSeconds(3000));
+        RELATEDLISTDELIVERY.get(0).should(appear,Duration.ofSeconds(60));
         return RELATEDLISTSOLI.size() == 4 && RELATEDLISTDELIVERY.size() ==1;
     }
 }

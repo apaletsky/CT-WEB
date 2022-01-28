@@ -38,7 +38,7 @@ public class OrderDetailsPage {
     private final SelenideElement TOTALPRICE = $x("//*[text()='Total Price:']");
     private final SelenideElement TOTALDISCOUNT = $x("//*[text()='Total Discount:']");
     // окно создания доставки
-    private final SelenideElement ADDADDRESS = $x("//*[@name='deliveryAddress']");
+    private final SelenideElement ADDADDRESS = $x("//*[text()='Add Address']//following-sibling::div//input");
     private final SelenideElement ADDDATE = $x("//*[@name='deliveryDate']");
     private final SelenideElement OKBUTTON = $x("//*[@title='OK']");
 
@@ -67,12 +67,12 @@ public class OrderDetailsPage {
     private ProductsDTO productsDTO = productsDTO();
 
     public boolean verifyThatOrderDetailsIsDisplayed() {
-        ORDERDETAILS.should(visible, Duration.ofSeconds(3000));
+        ORDERDETAILS.should(visible, Duration.ofSeconds(60));
         return ORDERDETAILS.isDisplayed();
     }
 
     public boolean verifyThatSearchFieldIsDisplayed() {
-        SEARCHFIELD.should(visible, Duration.ofSeconds(3000));
+        SEARCHFIELD.should(visible, Duration.ofSeconds(60));
         return SEARCHFIELD.isDisplayed();
     }
 
@@ -110,10 +110,10 @@ public class OrderDetailsPage {
 //        for(int i = 0; i<productsDTO.getProducts().size(); i++){
 //            System.out.println("getProduct from DTO №" + i + " = " + productsDTO.getProducts().get(i));
 //        }
-        CATALOGDANISSIMO105_prod1 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(0))).shouldBe(visible, Duration.ofSeconds(3000));
-        CATALOGDANISSIMO105_prod2 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(1))).shouldBe(visible, Duration.ofSeconds(3000));
-        CATALOGDANISSIMO105_prod3 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(2))).shouldBe(visible, Duration.ofSeconds(3000));
-        CATALOGDANISSIMO105_prod4 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(3))).shouldBe(visible, Duration.ofSeconds(3000));
+        CATALOGDANISSIMO105_prod1 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(0))).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod2 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(1))).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod3 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(2))).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod4 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(3))).shouldBe(visible, Duration.ofSeconds(60));
 
         return CATALOGDANISSIMO105_prod1.isDisplayed()
                 && CATALOGDANISSIMO105_prod2.isDisplayed()
@@ -155,25 +155,25 @@ public class OrderDetailsPage {
     }
 
     public boolean verifyThatTotalPriceIsDisplayed() {
-        TOTALPRICE.should(appear, Duration.ofSeconds(3000));
+        TOTALPRICE.should(appear, Duration.ofSeconds(60));
         return TOTALPRICE.isDisplayed();
     }
 
     public boolean verifyThatTotalDiscountIsDisplayed() {
-        TOTALDISCOUNT.should(appear, Duration.ofSeconds(3000));
+        TOTALDISCOUNT.should(appear, Duration.ofSeconds(60));
         return TOTALDISCOUNT.isDisplayed();
     }
 
     public void clickAddButton(){
-        ADDBUTTON.should(visible, Duration.ofSeconds(3000));
+        ADDBUTTON.should(visible, Duration.ofSeconds(60));
         ADDBUTTON.click();
     }
 
     public boolean verifyThatAddressPopulated(){
-//        System.out.println("****** = " + ADDADDRESS.getText());
-        DELIVERYADDRESS = ADDADDRESS.getText();
-//        System.out.println("DELIVERYADDADDRESS = " + DELIVERYADDRESS);
-        return ADDADDRESS.getText().length() != 0;
+        System.out.println("****** = " + ADDADDRESS.getAttribute("value"));
+        DELIVERYADDRESS = ADDADDRESS.getAttribute("value");
+       System.out.println("DELIVERYADDADDRESS = " + DELIVERYADDRESS);
+        return DELIVERYADDRESS.length() != 0;
     }
 
     public boolean verifyThatDatePopulatedAsToday(){
@@ -191,18 +191,18 @@ public class OrderDetailsPage {
     }
 
     public void clickButtonOK(){
-        OKBUTTON.should(visible, Duration.ofSeconds(3000));
+        OKBUTTON.should(visible, Duration.ofSeconds(60));
         OKBUTTON.click();
     }
 
     public boolean verifyThatProductNameIsDisplayed() {
-        PRODUCTNAME.should(visible,Duration.ofSeconds(3000));
+        PRODUCTNAME.should(visible,Duration.ofSeconds(60));
 //        System.out.println("PRODUCTNAME.isDisplayed() = "+ PRODUCTNAME.isDisplayed());
         return PRODUCTNAME.isDisplayed();
     }
 
     public boolean verifyThatDeliveryAddressIsDisplayedAndCorrect() {
-        DELIVERYADDEDADDRESS = $x(String.format("//*[@title='%s']", DELIVERYADDRESS)).shouldBe(visible, Duration.ofSeconds(3000));
+        DELIVERYADDEDADDRESS = $x(String.format("//*[@title='%s']", DELIVERYADDRESS)).shouldBe(visible, Duration.ofSeconds(60));
 //        System.out.println("DELIVERYADDADDRESS from verifyThatDeliveryAddressIsDisplayed = " + DELIVERYADDRESS);
 //        System.out.println("DELIVERYADDRESS.isDisplayed() = " + DELIVERYADDEDADDRESS.isDisplayed());
 //        System.out.println("DELIVERYADDADDRESS.equals(DELIVERYADDRESS.getText()) = " + DELIVERYADDRESS.equals(DELIVERYADDEDADDRESS.getText()));
@@ -210,7 +210,7 @@ public class OrderDetailsPage {
     }
 
     public boolean verifyThatDateIsDisplayedAndCorrect() {
-        DELIVERYADDEDDATE.shouldBe(visible, Duration.ofSeconds(3000));
+        DELIVERYADDEDDATE.shouldBe(visible, Duration.ofSeconds(60));
 //        System.out.println("DELIVERYADDEDDATE.getText() = " + DELIVERYADDEDDATE.getText());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
@@ -267,24 +267,24 @@ public class OrderDetailsPage {
 
     public void clickSafeDraftButton(){
         //System.out.println("SAFEDRAFTBUTTON.isEnabled() = " + SAFEDRAFTBUTTON.isEnabled());
-        SAFEDRAFTBUTTON.shouldBe(enabled, Duration.ofSeconds(3000));
+        SAFEDRAFTBUTTON.shouldBe(enabled, Duration.ofSeconds(60));
         //System.out.println("SAFEDRAFTBUTTON.isEnabled() = " + SAFEDRAFTBUTTON.isEnabled());
         SAFEDRAFTBUTTON.click();
     }
 
     public void clickExitButton(){
-        EXITBUTTON.shouldBe(visible, Duration.ofSeconds(3000));
+        EXITBUTTON.shouldBe(visible, Duration.ofSeconds(60));
         EXITBUTTON.click();
     }
 
     public boolean verifyThatPopUpForVerificationIsDisplayed(){
-        POPUP_AREYOUSURE.should(visible,Duration.ofSeconds(3000));
-        OKBUTTONONPOPUP.should(visible, Duration.ofSeconds(3000));
+        POPUP_AREYOUSURE.should(visible,Duration.ofSeconds(60));
+        OKBUTTONONPOPUP.should(visible, Duration.ofSeconds(60));
         return POPUP_AREYOUSURE.isDisplayed() && OKBUTTONONPOPUP.isDisplayed();
     }
 
     public void clickOkButtonOnVerificationPopUp(){
-        OKBUTTONONPOPUP.shouldBe(visible, Duration.ofSeconds(3000));
+        OKBUTTONONPOPUP.shouldBe(visible, Duration.ofSeconds(60));
         OKBUTTONONPOPUP.click();
     }
 }
