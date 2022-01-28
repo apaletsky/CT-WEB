@@ -1,11 +1,7 @@
 name: Run tests
 on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
+  schedule:
+    - cron: '0 20 * * *' # every 20:00 UTC (23:00 MSK)
 
   workflow_dispatch:
     inputs:
@@ -39,7 +35,6 @@ jobs:
           name: test-report
           path: build/reports/
 
-
       - name: configure AWS client
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -51,7 +46,6 @@ jobs:
         run: mkdir -p build/allure-results && .github/download_history.sh build/allure-results
         if: always()
 
-
       - name: generate allure report locally
         id: gen_report
         if: always()
@@ -60,7 +54,6 @@ jobs:
       - name: upload report to S3
         if: always()
         run: ./.github/upload_results.sh build/reports/allure-report
-
 
       - name: report to slack
         if: always()
