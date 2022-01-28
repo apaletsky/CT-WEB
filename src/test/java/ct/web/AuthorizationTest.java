@@ -25,7 +25,7 @@ public class AuthorizationTest extends BaseTest {
     @Test
     @TmsLink("C52998")
     public void authorizationWithValidCredentials() {
-        //loginSteps.loginWithValidCredentials();
+        loginSteps.loginWithValidCredentials();
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
