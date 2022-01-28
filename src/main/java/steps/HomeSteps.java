@@ -10,7 +10,7 @@ public class HomeSteps {
 
     @Step("Verify that homepage is displayed")
     public void verifyThatHomepageIsDisplayed() {
-        Assertions.assertFalse(homePage.verifyThatHomepageIsDisplayed());
+        Assertions.assertTrue(homePage.verifyThatHomepageIsDisplayed());
     }
 
     @Step("Click Switch To Lightning button if button is Visible")
