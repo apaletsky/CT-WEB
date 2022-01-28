@@ -7,5 +7,5 @@ then
 version="fb-"$version
 fi
 aws s3 sync $1 "s3://ctwebtestreports/$version"
-echo "::warning::See report: http://ctwebtestreports.s3-website-eu-west-1.amazonaws.com/$version/"
-echo "REPORT_URL=http://ctwebtestreports.s3-website-eu-west-1.amazonaws.com/$version/" >> $GITHUB_ENV
+echo "::warning::See report: http://ctwebtestreports.s3-website-us-east-1.amazonaws.com/$version/"
+echo "REPORT_URL=http://ctwebtestreports.s3-website-us-east-1.amazonaws.com/$version/" >> $GITHUB_ENV
