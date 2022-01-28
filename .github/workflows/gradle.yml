@@ -29,6 +29,11 @@ jobs:
           java-version: '11'
       - name: Run tests in Gradle
         run: ./gradlew clean test -Dselenide.headless=true --info --rerun-tasks
+      #- uses: actions/upload-artifact@v2
+       # if: always()
+        #with:
+         # name: test-report
+          #path: build/reports/
 
       - name: configure AWS client
         uses: aws-actions/configure-aws-credentials@v1
