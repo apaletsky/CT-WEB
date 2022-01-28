@@ -5,6 +5,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import io.qameta.allure.TmsLink;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.HomeSteps;
@@ -20,6 +21,7 @@ public class OrderTest extends BaseTest {
     OrderModuleSteps orderModuleSteps = new OrderModuleSteps();
     OrderDetailsSteps orderDetailsSteps = new OrderDetailsSteps();
 
+    @Disabled
     @Story("C53000 Создание заказа")
     @Description("C53000 Создание заказа")
     @DisplayName("C53000 Создание заказа")
@@ -39,6 +41,7 @@ public class OrderTest extends BaseTest {
         orderModuleSteps.verifyThatToastMessageIsDisplayed();
     }
 
+    @Disabled
     @Story("C52999 Отображение элементов на странице формирования заказа (каталог, промо, кнопки, номер заказа и тд) ")
     @Description("C52999 Отображение элементов на странице формирования заказа (каталог, промо, кнопки, номер заказа и тд) ")
     @DisplayName("C52999 Отображение элементов на странице формирования заказа (каталог, промо, кнопки, номер заказа и тд)")
@@ -60,6 +63,7 @@ public class OrderTest extends BaseTest {
         orderDetailsSteps.verifyThatOrderDetailsElementsIsDisplayed();
     }
 
+    @Disabled
     @Story("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
     @Description("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
     @DisplayName("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
