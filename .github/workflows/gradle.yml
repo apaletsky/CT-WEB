@@ -1,4 +1,4 @@
-name: Run tests
+name: Selenoid test execution
 on:
   schedule:
     - cron: '0 20 * * *' # every 20:00 UTC (23:00 MSK)
