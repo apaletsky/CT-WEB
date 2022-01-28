@@ -5,7 +5,6 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import io.qameta.allure.TmsLink;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.HomeSteps;
@@ -19,7 +18,6 @@ public class AuthorizationTest extends BaseTest {
     HomeSteps homeSteps = new HomeSteps();
     OrderModuleSteps orderModuleSteps = new OrderModuleSteps();
 
-    @Disabled
     @Story("C52998 Авторизация и вход в Order Module")
     @Description("C52998 Авторизация и вход в Order Module")
     @DisplayName("Авторизация и вход в Order Module")
