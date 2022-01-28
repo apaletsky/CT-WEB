@@ -11,13 +11,14 @@ public class MySelenoidSetup implements BeforeAllCallback {
     public void beforeAll(ExtensionContext context) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", "chrome");
-        capabilities.setCapability("browserVersion", "97.0");
+        capabilities.setCapability("browserVersion", "96.0");
         capabilities.setCapability("browserSize", "1366x768");
         capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", false);
+        capabilities.setCapability("enableVideo", true);
 
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = "http://localhost:4444/wd/hub";
+        //Configuration.remote = "http://localhost:4444/wd/hub"; // selenoid config
+        Configuration.remote = "http://34.122.208.8:4444/wd/hub"; // moon config
 
     }
 }
