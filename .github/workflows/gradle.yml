@@ -1,13 +1,8 @@
-
 name: Run tests
 on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
-      
+  schedule:
+    - cron: '0 20 * * *' # every 20:00 UTC (23:00 MSK)
+
   workflow_dispatch:
     inputs:
       appName:
@@ -18,7 +13,7 @@ on:
         required: false
         description: Additional gradle arguments
         default: ""
-      
+
 jobs:
   run-tests-job:
     runs-on: ubuntu-latest
@@ -28,14 +23,44 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
- 
+
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
       - name: Run tests in Gradle
-        run: ./gradlew clean test -Dselenide.headless=true --info --rerun-tasks
+        run: ./gradlew clean test
       - uses: actions/upload-artifact@v2
         if: always()
         with:
           name: test-report
           path: build/reports/
+
+      - name: configure AWS client
+        uses: aws-actions/configure-aws-credentials@v1
+        if: always()
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: download history
+        run: mkdir -p build/allure-results && .github/download_history.sh build/allure-results
+        if: always()
+
+      - name: generate allure report locally
+        id: gen_report
+        if: always()
+        run: ./gradlew allureReport
+
+      - name: upload report to S3
+        if: always()
+        run: ./.github/upload_results.sh build/reports/allure-report
+
+      - name: report to slack
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_CHANNEL: '#web-tests'
+          SLACK_TITLE: "${{ env.GITHUB_WORKFLOW }} run #${{ env.GITHUB_RUN_NUMBER }}"
+          SLACK_MESSAGE: "See report ${{ env.REPORT_URL}}"
