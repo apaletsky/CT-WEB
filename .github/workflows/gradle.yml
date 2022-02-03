@@ -22,7 +22,7 @@ jobs:
         uses: Xotabu4/selenoid-github-action@v2
         with:
           selenoid-start-arguments: |
-            --browsers 'chrome' --last-versions 20
+            --browsers 'chrome' --version '90'
 
       - name: Checkout
         uses: actions/checkout@v2
