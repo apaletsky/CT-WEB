@@ -17,8 +17,8 @@ public class MySelenoidSetup implements BeforeAllCallback {
         capabilities.setCapability("enableVideo", false);
 
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = "http://localhost:4444/wd/hub"; // Selenoid config
-        //Configuration.remote = "http://34.122.208.8:4444/wd/hub"; // Moon config
+       // Configuration.remote = "http://localhost:4444/wd/hub"; // Selenoid config
+        Configuration.remote = "http://34.122.208.8:4444/wd/hub"; // Moon config
 
     }
 }
