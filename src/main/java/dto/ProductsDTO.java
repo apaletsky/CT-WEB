@@ -9,9 +9,27 @@ import java.util.List;
 public class ProductsDTO {
 
     @JsonProperty("products")
-    List<String> Products;
+    private List<Product> Products;
 
-    public List<String> getProducts() {
+    public List<Product> getProducts() {
         return Products;
+    }
+
+    //https://medium.com/@lemonchen/jackson-json-to-inner-class-hava-collection-list-or-map-property-76b94df43532
+
+    @Data
+    public static class Product {
+        @JsonProperty("name")
+        private String name;
+        @JsonProperty("quantity")
+        private String quantity;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getQuantity() {
+            return quantity;
+        }
     }
 }

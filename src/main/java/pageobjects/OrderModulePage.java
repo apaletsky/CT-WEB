@@ -43,6 +43,7 @@ public class OrderModulePage {
     private final String ONHOLD = "On-Hold";
     private final ElementsCollection RELATEDLISTSOLI = $$x("//*[@aria-label='Order Line Item #']//ancestor::table//tbody//tr");
     private final ElementsCollection RELATEDLISTDELIVERY = $$x("//*[@aria-label='Delivery #']//ancestor::table//tbody//tr");
+    private final SelenideElement DELIVERYRECORDBUTTON= $x("//*[@aria-label='Delivery #']//ancestor::table//tbody//tr//lightning-button-icon//preceding-sibling::a");
     private final SelenideElement FOOTER = $x("//*[@data-component-id='force_relatedListContainer']");
 
     CredentionalDTO credentionalDTO = credentionalDTO();
@@ -106,7 +107,6 @@ public class OrderModulePage {
             synchronized(this){
                 this.wait(1000);
             }
-            System.out.println("======== wait 1000 millis ========");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -132,9 +132,14 @@ public class OrderModulePage {
         return STAGEFIELD.getText().equals(ONHOLD);
     }
 
-    public boolean verifyThatRelatedListsHaveCountsOfAddedItems(){
+    public boolean verifyThatRelatedListsHaveCountsOfAddedItems(int sizeOfOLI, int sizeOfDelivery){
         FOOTER.scrollIntoView(true);
         RELATEDLISTDELIVERY.get(0).should(appear,Duration.ofSeconds(60));
-        return RELATEDLISTSOLI.size() == 4 && RELATEDLISTDELIVERY.size() ==1;
+        return RELATEDLISTSOLI.size() == sizeOfOLI && RELATEDLISTDELIVERY.size() == sizeOfDelivery;
     }
+
+    public void clickDeliveryRecord(){
+        String href = DELIVERYRECORDBUTTON.getAttribute("href");
+        Selenide.open(href);
+  }
 }

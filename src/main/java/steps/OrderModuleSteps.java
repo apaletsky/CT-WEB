@@ -50,7 +50,12 @@ public class OrderModuleSteps {
     }
 
     @Step
-    public void verifyThatRelatedListsHaveCountsOfAddedItems(){
-        Assertions.assertTrue(orderModulePage.verifyThatRelatedListsHaveCountsOfAddedItems());
+    public void verifyThatRelatedListsHaveCountsOfAddedItems(int sizeOfOLI, int sizeOfDelivery){
+        Assertions.assertTrue(orderModulePage.verifyThatRelatedListsHaveCountsOfAddedItems(sizeOfOLI, sizeOfDelivery));
+    }
+
+    @Step
+    public void clickDeliveryRecord() {
+        orderModulePage.clickDeliveryRecord();
     }
 }

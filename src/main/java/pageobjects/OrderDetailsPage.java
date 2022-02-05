@@ -8,6 +8,7 @@ import java.time.Duration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -51,6 +52,11 @@ public class OrderDetailsPage {
     // (используется общий,для всех элементов в списке локатор - не надо искать уникальный локатор для каждого элемента, в отличии от Selenide Element)
     private final ElementsCollection ADDEDPRODUCTS = $$x("//*[@data-name='product']");
     private final ElementsCollection QUANTITYOFADDEDPRODUCTS = $$x("//*[@data-name='dli']//input");
+    private final ElementsCollection PRODUCTSDELETIONCHECKBOXES = $$x("//*[@data-name='product']//ancestor::th//following-sibling::td/lightning-input/div/span/label"); //$$x("//*[@class='order-table-row slds-hint-parent']//td//input");
+    private final ElementsCollection DELETEBUTTON = $$x("//*[@title='delete']");
+
+    private int countOfAddedProduct;
+
     private final SelenideElement SAFEDRAFTBUTTON = $x("//*[text()='Save Draft']");
     private final SelenideElement EXITBUTTON = $x("//*[@title='Exit']");
 
@@ -109,11 +115,13 @@ public class OrderDetailsPage {
         //цикл, исполььзуется здесь,чтобы избежать написания одинаковых действий (вывод интерфейс продуктов из JSON)
 //        for(int i = 0; i<productsDTO.getProducts().size(); i++){
 //            System.out.println("getProduct from DTO №" + i + " = " + productsDTO.getProducts().get(i));
+//            System.out.println("getProduct.getName from DTO №" + i + " = " + productsDTO.getProducts().get(i).getName());
+//            System.out.println("getProduct.getQuantity from DTO №" + i + " = " + productsDTO.getProducts().get(i).getQuantity());
 //        }
-        CATALOGDANISSIMO105_prod1 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(0))).shouldBe(visible, Duration.ofSeconds(60));
-        CATALOGDANISSIMO105_prod2 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(1))).shouldBe(visible, Duration.ofSeconds(60));
-        CATALOGDANISSIMO105_prod3 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(2))).shouldBe(visible, Duration.ofSeconds(60));
-        CATALOGDANISSIMO105_prod4 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(3))).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod1 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(0).getName())).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod2 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(1).getName())).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod3 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(2).getName())).shouldBe(visible, Duration.ofSeconds(60));
+        CATALOGDANISSIMO105_prod4 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(3).getName())).shouldBe(visible, Duration.ofSeconds(60));
 
         return CATALOGDANISSIMO105_prod1.isDisplayed()
                 && CATALOGDANISSIMO105_prod2.isDisplayed()
@@ -170,9 +178,9 @@ public class OrderDetailsPage {
     }
 
     public boolean verifyThatAddressPopulated(){
-        System.out.println("****** = " + ADDADDRESS.getAttribute("value"));
+        //System.out.println("****** = " + ADDADDRESS.getAttribute("value"));
         DELIVERYADDRESS = ADDADDRESS.getAttribute("value");
-       System.out.println("DELIVERYADDADDRESS = " + DELIVERYADDRESS);
+        //System.out.println("DELIVERYADDADDRESS = " + DELIVERYADDRESS);
         return DELIVERYADDRESS.length() != 0;
     }
 
@@ -218,6 +226,14 @@ public class OrderDetailsPage {
         return DELIVERYADDEDDATE.getText().equals(dtf.format(now));
     }
 
+    public int getCountOfAddedProduct() {
+        return countOfAddedProduct;
+    }
+
+    public void setCountOfAddedProduct(int countOfAddedProduct) {
+        this.countOfAddedProduct = countOfAddedProduct;
+    }
+
     public boolean verifyThatProductsAreAdded(){
 //        boolean allProductAreAdded = true;
 //        for(int i = 0; i<ADDEDPRODUCTS.size(); i++){
@@ -230,7 +246,8 @@ public class OrderDetailsPage {
 //                return allProductAreAdded;
 //        System.out.println("ADDEDPRODUCTS.size() = " + ADDEDPRODUCTS.size());
 //        System.out.println("productsDTO.getProducts().size() = " + productsDTO.getProducts().size());
-
+        setCountOfAddedProduct(ADDEDPRODUCTS.size());
+        //нужно придумать как пробрасывать эту инфу в OrderModulePage
         return ADDEDPRODUCTS.size() == productsDTO.getProducts().size();
     }
 
@@ -248,27 +265,25 @@ public class OrderDetailsPage {
     }
 
     public void setQuantityValuesForAddedProducts(){
-        QUANTITYOFADDEDPRODUCTS.get(0).setValue("5");
+        QUANTITYOFADDEDPRODUCTS.get(0).setValue(productsDTO.getProducts().get(0).getQuantity());
         QUANTITYOFADDEDPRODUCTS.get(1).click();
-        QUANTITYOFADDEDPRODUCTS.get(1).setValue("10");
+        QUANTITYOFADDEDPRODUCTS.get(1).setValue(productsDTO.getProducts().get(1).getQuantity());
         QUANTITYOFADDEDPRODUCTS.get(2).click();
-        QUANTITYOFADDEDPRODUCTS.get(2).setValue("15");
+        QUANTITYOFADDEDPRODUCTS.get(2).setValue(productsDTO.getProducts().get(2).getQuantity());
         QUANTITYOFADDEDPRODUCTS.get(3).click();
-        QUANTITYOFADDEDPRODUCTS.get(3).setValue("20");
+        QUANTITYOFADDEDPRODUCTS.get(3).setValue(productsDTO.getProducts().get(3).getQuantity());
         QUANTITYOFADDEDPRODUCTS.get(0).click();
     }
 
     public boolean verifyThatQuantityOfAddedProductsIsChanged(){
-        return QUANTITYOFADDEDPRODUCTS.get(0).getAttribute("value").equals("5")
-                && QUANTITYOFADDEDPRODUCTS.get(1).getAttribute("value").equals("10")
-                && QUANTITYOFADDEDPRODUCTS.get(2).getAttribute("value").equals("15")
-                && QUANTITYOFADDEDPRODUCTS.get(3).getAttribute("value").equals("20");
+        return Objects.equals(QUANTITYOFADDEDPRODUCTS.get(0).getAttribute("value"), productsDTO.getProducts().get(0).getQuantity())
+                && Objects.equals(QUANTITYOFADDEDPRODUCTS.get(1).getAttribute("value"), productsDTO.getProducts().get(1).getQuantity())
+                && Objects.equals(QUANTITYOFADDEDPRODUCTS.get(2).getAttribute("value"), productsDTO.getProducts().get(2).getQuantity())
+                && Objects.equals(QUANTITYOFADDEDPRODUCTS.get(3).getAttribute("value"), productsDTO.getProducts().get(3).getQuantity());
     }
 
     public void clickSafeDraftButton(){
-        //System.out.println("SAFEDRAFTBUTTON.isEnabled() = " + SAFEDRAFTBUTTON.isEnabled());
         SAFEDRAFTBUTTON.shouldBe(enabled, Duration.ofSeconds(60));
-        //System.out.println("SAFEDRAFTBUTTON.isEnabled() = " + SAFEDRAFTBUTTON.isEnabled());
         SAFEDRAFTBUTTON.click();
     }
 
@@ -286,5 +301,11 @@ public class OrderDetailsPage {
     public void clickOkButtonOnVerificationPopUp(){
         OKBUTTONONPOPUP.shouldBe(visible, Duration.ofSeconds(60));
         OKBUTTONONPOPUP.click();
+    }
+
+    public void deleteLastProduct(){
+        //https://ru.stackoverflow.com/questions/1124189/selenide-%D0%9E%D1%82%D0%BC%D0%B5%D1%82%D0%B8%D1%82%D1%8C-checkbox
+        PRODUCTSDELETIONCHECKBOXES.last().click();
+        DELETEBUTTON.last().click();
     }
 }
