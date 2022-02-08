@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static dto.MapperDTO.credentionalDTO;
 
 
-@ExtendWith(MySelenoidSetup.class)
+//@ExtendWith(MySelenoidSetup.class)
 public class BaseTest {
     CredentionalDTO credentionalDTO = credentionalDTO();
 
