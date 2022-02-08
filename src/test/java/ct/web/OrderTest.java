@@ -7,10 +7,8 @@ import io.qameta.allure.Story;
 import io.qameta.allure.TmsLink;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import steps.HomeSteps;
-import steps.LoginSteps;
-import steps.OrderDetailsSteps;
-import steps.OrderModuleSteps;
+import pageobjects.DeliveryPage;
+import steps.*;
 
 @DisplayName("Order test")
 public class OrderTest extends BaseTest {
@@ -19,6 +17,9 @@ public class OrderTest extends BaseTest {
     HomeSteps homeSteps = new HomeSteps();
     OrderModuleSteps orderModuleSteps = new OrderModuleSteps();
     OrderDetailsSteps orderDetailsSteps = new OrderDetailsSteps();
+    DeliverySteps deliverySteps = new DeliverySteps();
+
+
 
     @Story("C53000 Создание заказа")
     @Description("C53000 Создание заказа")
@@ -28,7 +29,7 @@ public class OrderTest extends BaseTest {
     @TmsLink("C53000")
     public void createOrder() {
         loginSteps.loginWithValidCredentials();
-        homeSteps.clickSwitchToLightning();
+        homeSteps.clickSwitchToLightning(); //
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
@@ -65,7 +66,7 @@ public class OrderTest extends BaseTest {
     @DisplayName("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
     @Severity(SeverityLevel.CRITICAL)
     @Test
-    @TmsLink("C53575")
+    @TmsLink("https://ctm.testrail.io/index.php?/cases/view/53575&group_by=cases:section_id&group_order=asc&display_deleted_cases=0&group_id=6518")
     public void verifyProductAndDeliveryAdditionWithOLIAndDLICreation(){
         loginSteps.loginWithValidCredentials();
         homeSteps.clickSwitchToLightning();
@@ -92,14 +93,75 @@ public class OrderTest extends BaseTest {
         orderDetailsSteps.verifyThatAddressPopulated();
         orderDetailsSteps.verifyThatDatePopulatedAsToday();
         orderDetailsSteps.clickOkButton();
-        orderDetailsSteps.verifyThatProductNameisDisplayed();
-        //orderDetailsSteps.verifyThatDeliveryAddressIsDisplayed();
-        // проблема с шагом из-за того что  в поле дата/адрес в хедере страницы заказа для адреса используется проверка isDisplayed,
-        // а сам адрес не помещается полностью, соответственно не отображается
-/*
-1. убрать проверку на конкретные продукты - вместо этого сделать цикл на добавление 4-х верхних продуктов
-2. добавить проверку на выделение желтым каждого добавленного продукта
-3. продолжить тест с 41-42 шага (https://ctm.testrail.io/index.php?/cases/view/53575&group_by=cases:section_id&group_order=asc&display_deleted_cases=0&group_id=6518)
-*/
+        orderDetailsSteps.verifyThatOrderViewGetData();
+        orderDetailsSteps.setQuantityValuesForAddedProducts();
+        orderDetailsSteps.verifyThatQuantityOfAddedProductsIsChanged();
+        orderDetailsSteps.clickSafeDraftButton();
+        orderModuleSteps.verifyThatToastMessageIsDisplayed();
+        orderDetailsSteps.clickExitButton();
+        orderDetailsSteps.verifyThatPopUpForVerificationIsDisplayed();
+        orderDetailsSteps.clickOkButtonOnVerificationPopUp();
+        orderModuleSteps.verifyThatStageFieldIsOnHold();
+        orderModuleSteps.verifyThatRelatedListsHaveCountsOfAddedItems(4,1);
+    }
+
+    @Story("C56460 Удаление продукта из заказа")
+    @Description("C56460 Удаление продукта из заказа")
+    @DisplayName("C56460 Удаление продукта из заказа")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    @TmsLink("https://ctm.testrail.io/index.php?/cases/view/56460&group_by=cases:section_id&group_id=6518&group_order=asc&display_deleted_cases=0")
+    public void deletionProductsFromAnOrder () {
+        loginSteps.loginWithValidCredentials();
+        homeSteps.clickSwitchToLightning();
+        homeSteps.verifyThatHomepageIsDisplayed();
+        homeSteps.openApplication("Order M");
+        orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
+        orderModuleSteps.goToOrdersTab();
+        orderModuleSteps.clickNewButton();
+        orderModuleSteps.verifyThatNewOrderViewIsDisplayed();
+        orderModuleSteps.fillNewOrderView();
+        orderModuleSteps.verifyThatToastMessageIsDisplayed();
+        orderModuleSteps.clickEditCartButton();
+        orderDetailsSteps.verifyThatOrderDetailsElementsIsDisplayed();
+        orderDetailsSteps.clickOrderProductHierarchy();
+        orderDetailsSteps.verifyThatCatalogDanissimoIsDisplayed();
+        orderDetailsSteps.clickCatalogDanissimo();
+        orderDetailsSteps.verifyThatCatalogDanissimo105IsDisplayed();
+        orderDetailsSteps.clickCatalogDanissimo105();
+        orderDetailsSteps.verifyThatProductsInCatalogDanissimo105IsDisplayed();
+        orderDetailsSteps.addProductsFromCatalogDanissimo105();
+        orderDetailsSteps.verifyProd4BackgroundColorisYellow();
+        orderDetailsSteps.verifyThatAddButtonContainNumberOfAddedProduct();
+        orderDetailsSteps.clickAddButton();
+        orderDetailsSteps.verifyThatAddressPopulated();
+        orderDetailsSteps.verifyThatDatePopulatedAsToday();
+        orderDetailsSteps.clickOkButton();
+        orderDetailsSteps.verifyThatOrderViewGetData();
+        orderDetailsSteps.setQuantityValuesForAddedProducts();
+        orderDetailsSteps.verifyThatQuantityOfAddedProductsIsChanged();
+        orderDetailsSteps.clickSafeDraftButton();
+        orderModuleSteps.verifyThatToastMessageIsDisplayed();
+        orderDetailsSteps.clickExitButton();
+        orderDetailsSteps.verifyThatPopUpForVerificationIsDisplayed();
+        orderDetailsSteps.clickOkButtonOnVerificationPopUp();
+        orderModuleSteps.verifyThatStageFieldIsOnHold();
+        orderModuleSteps.verifyThatRelatedListsHaveCountsOfAddedItems(4,1);
+        orderModuleSteps.clickDeliveryRecord();
+        deliverySteps.verifyThatRelatedListsDLILoaded(4);
+        deliverySteps.verifyThatDLIsHaveProductsQuantity();
+        deliverySteps.clickOrderRecord();
+        orderModuleSteps.clickEditCartButton();
+        orderDetailsSteps.verifyThatOrderDetailsElementsIsDisplayed();
+        orderDetailsSteps.deleteLastProduct();
+        orderDetailsSteps.clickSafeDraftButton();
+        orderModuleSteps.verifyThatToastMessageIsDisplayed();
+        orderDetailsSteps.clickExitButton();
+        orderDetailsSteps.verifyThatPopUpForVerificationIsDisplayed();
+        orderDetailsSteps.clickOkButtonOnVerificationPopUp();
+        orderModuleSteps.verifyThatStageFieldIsOnHold();
+        orderModuleSteps.verifyThatRelatedListsHaveCountsOfAddedItems(3,1);
+        orderModuleSteps.clickDeliveryRecord();
+        deliverySteps.verifyThatRelatedListsDLILoaded(3);
     }
 }

@@ -86,28 +86,69 @@ public class OrderDetailsSteps {
         orderDetailsPage.clickAddButton();
     }
 
-    @Step
+    @Step("Verify that Address field is auto-populated with any address")
     public void verifyThatAddressPopulated(){
         Assertions.assertTrue(orderDetailsPage.verifyThatAddressPopulated());
     }
 
-    @Step
+    @Step("Verify that Date field is auto-populated as Today")
     public void verifyThatDatePopulatedAsToday(){
         Assertions.assertTrue(orderDetailsPage.verifyThatDatePopulatedAsToday());
     }
 
-    @Step
+    @Step("Click Ok button")
     public void clickOkButton(){
         orderDetailsPage.clickButtonOK();
     }
 
-    @Step
-    public void verifyThatProductNameisDisplayed(){
-        Assertions.assertTrue(orderDetailsPage.verifyThatProductNameIsDisplayed());
+    @Step("Verify that on Order Page added selected products with quantity = 0 and Address and Date from previous steps")
+    public void verifyThatOrderViewGetData(){
+        SoftAssertions.assertSoftly(a->{
+            a.assertThat(orderDetailsPage.verifyThatProductNameIsDisplayed())
+                    .isTrue();
+            a.assertThat(orderDetailsPage.verifyThatDeliveryAddressIsDisplayedAndCorrect())
+                    .isTrue();
+            a.assertThat(orderDetailsPage.verifyThatDateIsDisplayedAndCorrect())
+                    .isTrue();
+            a.assertThat(orderDetailsPage.verifyThatProductsAreAdded())
+                    .isTrue();
+            a.assertThat(orderDetailsPage.verifyThatQuantityOfAddedProductsIsZero())
+                    .isTrue();
+        });
     }
 
     @Step
-    public void verifyThatDeliveryAddressIsDisplayed(){
-        Assertions.assertTrue(orderDetailsPage.verifyThatDeliveryAddressIsDisplayed());
+    public void setQuantityValuesForAddedProducts(){
+        orderDetailsPage.setQuantityValuesForAddedProducts();
+    }
+
+    @Step
+    public void verifyThatQuantityOfAddedProductsIsChanged(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatQuantityOfAddedProductsIsChanged());
+    }
+
+    @Step
+    public void clickSafeDraftButton(){
+        orderDetailsPage.clickSafeDraftButton();
+    }
+
+    @Step
+    public void clickExitButton(){
+        orderDetailsPage.clickExitButton();
+    }
+
+    @Step
+    public void verifyThatPopUpForVerificationIsDisplayed(){
+        Assertions.assertTrue(orderDetailsPage.verifyThatPopUpForVerificationIsDisplayed());
+    }
+
+    @Step
+    public void clickOkButtonOnVerificationPopUp(){
+        orderDetailsPage.clickOkButtonOnVerificationPopUp();
+    }
+
+    @Step
+    public void deleteLastProduct(){
+        orderDetailsPage.deleteLastProduct();
     }
 }

@@ -43,4 +43,19 @@ public class OrderModuleSteps {
     public void verifyThatToastMessageIsDisplayed() {
         Assertions.assertTrue(orderModulePage.verifyThatToastMessageIsDisplayed());
     }
+
+    @Step("Veify that Stage Field Is On-Hold")
+    public void verifyThatStageFieldIsOnHold() {
+        Assertions.assertTrue(orderModulePage.verifyThatStageFieldIsOnHold());
+    }
+
+    @Step
+    public void verifyThatRelatedListsHaveCountsOfAddedItems(int sizeOfOLI, int sizeOfDelivery){
+        Assertions.assertTrue(orderModulePage.verifyThatRelatedListsHaveCountsOfAddedItems(sizeOfOLI, sizeOfDelivery));
+    }
+
+    @Step
+    public void clickDeliveryRecord() {
+        orderModulePage.clickDeliveryRecord();
+    }
 }

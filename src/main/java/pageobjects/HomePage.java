@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static java.lang.String.format;
@@ -30,9 +31,18 @@ public class HomePage {
     }
 
     public void openApplication(String appName) {
+        APPLAUNCHER.should(visible, Duration.ofSeconds(3000));
         APPLAUNCHER.click();
+        if(!APPLAUNCHER.isDisplayed()){
+            APPLAUNCHER.click();
+        }
+
         APPLAUNCHERSERCH.sendKeys(appName);
         String fullLocator = format((("//*[text()='%s']")), appName);
         $x(fullLocator).click();
     }
+
+
 }
+
+
