@@ -3,9 +3,7 @@ package pageobjects;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import dto.ProductsDTO;
-
 import java.time.Duration;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -20,18 +18,14 @@ public class OrderDetailsPage {
     private final SelenideElement SEARCHFIELD = $x("//*[@name='search']");
     private final SelenideElement BUTTONSPANEL = $x("//*[@class='slds-page-header__col-actions slds-col']");
     private final SelenideElement CATALOGSTAB = $x("//a[@data-label='CATALOGS']");
-
     private final SelenideElement ACCORDINGSUMMARY = $x("//*[@title='All Accounts. SPOONABLE YOGHURTS']");
     private final SelenideElement CATALOGDANISSIMO = $x("//*[@title='Danissimo']");
     private final SelenideElement CATALOGDANISSIMO105 = $x("//*[@title='105']");
-
     private SelenideElement CATALOGDANISSIMO105_prod1;
     private SelenideElement CATALOGDANISSIMO105_prod2;
     private SelenideElement CATALOGDANISSIMO105_prod3;
     private SelenideElement CATALOGDANISSIMO105_prod4;
-
     private final SelenideElement CATALOGDANISSIMO105_prod4_BACKGROUNDCOLOR = $x("//*[@class='child-product item-checked']");
-
     private final SelenideElement PROMOTIONTAB = $x("//a[@data-label='PROMOTION']");
     private final SelenideElement ARROW = $x("//*[@class='slds-icon-utility-left split-view-btn slds-icon_container']");
     private final SelenideElement SELECTPRODUCTTEXT = $x("//*[text()='Select and add a product from the left list']");
@@ -55,7 +49,6 @@ public class OrderDetailsPage {
     private final SelenideElement POPUP_AREYOUSURE = $x("//*[text()='All changes will be lost. Are you sure?']");
     private final SelenideElement OKBUTTONONPOPUP = $x("//section/div/footer/lightning-button[1]/button");
     private final String YELLOWBACKGROUNDCOLOR = "250, 255, 143";
-
     private ProductsDTO productsDTO = productsDTO();
 
     public boolean verifyThatOrderDetailsIsDisplayed() {
@@ -102,7 +95,6 @@ public class OrderDetailsPage {
         CATALOGDANISSIMO105_prod2 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(1).getName())).shouldBe(visible, Duration.ofSeconds(60));
         CATALOGDANISSIMO105_prod3 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(2).getName())).shouldBe(visible, Duration.ofSeconds(60));
         CATALOGDANISSIMO105_prod4 = $x(String.format("//*[text()='%s']",productsDTO.getProducts().get(3).getName())).shouldBe(visible, Duration.ofSeconds(60));
-
         return CATALOGDANISSIMO105_prod1.isDisplayed()
                 && CATALOGDANISSIMO105_prod2.isDisplayed()
                 && CATALOGDANISSIMO105_prod3.isDisplayed()
