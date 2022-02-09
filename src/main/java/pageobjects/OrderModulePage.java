@@ -44,7 +44,6 @@ public class OrderModulePage {
     private final ElementsCollection RELATEDLISTSOLI = $$x("//*[@aria-label='Order Line Item #']//ancestor::table//tbody//tr");
     private final ElementsCollection RELATEDLISTDELIVERY = $$x("//*[@aria-label='Delivery #']//ancestor::table//tbody//tr");
     private final SelenideElement DELIVERYRECORDBUTTON= $x("//*[@aria-label='Delivery #']//ancestor::table//tbody//tr//lightning-button-icon//preceding-sibling::a");
-
     private final SelenideElement FOOTER = $x("//*[@data-component-id='force_relatedListContainer']");
 
     CredentionalDTO credentionalDTO = credentionalDTO();
