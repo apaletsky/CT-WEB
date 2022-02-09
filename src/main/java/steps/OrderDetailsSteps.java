@@ -146,4 +146,9 @@ public class OrderDetailsSteps {
     public void clickOkButtonOnVerificationPopUp(){
         orderDetailsPage.clickOkButtonOnVerificationPopUp();
     }
+
+    @Step
+    public void deleteLastProduct(){
+        orderDetailsPage.deleteLastProduct();
+    }
 }

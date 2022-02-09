@@ -9,9 +9,25 @@ import java.util.List;
 public class ProductsDTO {
 
     @JsonProperty("products")
-    List<String> Products;
+    private List<Product> Products;
 
-    public List<String> getProducts() {
+    public List<Product> getProducts() {
         return Products;
+    }
+
+    @Data
+    public static class Product {
+        @JsonProperty("name")
+        private String name;
+        @JsonProperty("quantity")
+        private String quantity;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getQuantity() {
+            return quantity;
+        }
     }
 }
