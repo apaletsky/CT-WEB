@@ -9,11 +9,13 @@ import java.io.IOException;
 //Класс создан для того, что бы указать путь к файлу с json, из которого будут тянустья данные
 public class MapperDTO {
 
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
     public MapperDTO() {
     }
 
     public static OrderDTO orderDTO() {
-        ObjectMapper objectMapper = new ObjectMapper();
+
         OrderDTO orderDTO = null;
         try {
             orderDTO = objectMapper.readValue(new File("src/main/resources/data/order.json"), OrderDTO.class);
@@ -24,7 +26,6 @@ public class MapperDTO {
     }
 //прописала аналогичное для Credational
     public static CredentionalDTO credentionalDTO() {
-        ObjectMapper objectMapper = new ObjectMapper();
         CredentionalDTO credentionalDTO = null;
         try {
             credentionalDTO = objectMapper.readValue(new File("src/main/resources/data/credentials.json"), CredentionalDTO.class);
@@ -32,5 +33,15 @@ public class MapperDTO {
             e.printStackTrace();
         }
         return credentionalDTO;
+    }
+
+    public static ProductsDTO productsDTO() {
+        ProductsDTO productsDTO = null;
+        try {
+            productsDTO = objectMapper.readValue(new File("src/main/resources/data/products.json"), ProductsDTO.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return productsDTO;
     }
 }

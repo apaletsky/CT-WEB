@@ -28,7 +28,7 @@ public class OrderTest extends BaseTest {
     @TmsLink("C53000")
     public void createOrder() {
         loginSteps.loginWithValidCredentials();
-        homeSteps.clickSwitchToLightning();
+        homeSteps.clickSwitchToLightning(); //
         homeSteps.verifyThatHomepageIsDisplayed();
         homeSteps.openApplication("Order M");
         orderModuleSteps.verifyThatOrderModulePageIsDisplayed();
@@ -65,7 +65,7 @@ public class OrderTest extends BaseTest {
     @DisplayName("C53575 Добавление в заказ продуктов и первой доставки -проверка создания записей OLI и DLI")
     @Severity(SeverityLevel.CRITICAL)
     @Test
-    @TmsLink("C53575")
+    @TmsLink("https://ctm.testrail.io/index.php?/cases/view/53575&group_by=cases:section_id&group_order=asc&display_deleted_cases=0&group_id=6518")
     public void verifyProductAndDeliveryAdditionWithOLIAndDLICreation(){
         loginSteps.loginWithValidCredentials();
         homeSteps.clickSwitchToLightning();
@@ -92,14 +92,15 @@ public class OrderTest extends BaseTest {
         orderDetailsSteps.verifyThatAddressPopulated();
         orderDetailsSteps.verifyThatDatePopulatedAsToday();
         orderDetailsSteps.clickOkButton();
-        orderDetailsSteps.verifyThatProductNameisDisplayed();
-        //orderDetailsSteps.verifyThatDeliveryAddressIsDisplayed();
-        // проблема с шагом из-за того что  в поле дата/адрес в хедере страницы заказа для адреса используется проверка isDisplayed,
-        // а сам адрес не помещается полностью, соответственно не отображается
-/*
-1. убрать проверку на конкретные продукты - вместо этого сделать цикл на добавление 4-х верхних продуктов
-2. добавить проверку на выделение желтым каждого добавленного продукта
-3. продолжить тест с 41-42 шага (https://ctm.testrail.io/index.php?/cases/view/53575&group_by=cases:section_id&group_order=asc&display_deleted_cases=0&group_id=6518)
-*/
+        orderDetailsSteps.verifyThatOrderViewGetData();
+        orderDetailsSteps.setQuantityValuesForAddedProducts();
+        orderDetailsSteps.verifyThatQuantityOfAddedProductsIsChanged();
+        orderDetailsSteps.clickSafeDraftButton();
+        orderModuleSteps.verifyThatToastMessageIsDisplayed();
+        orderDetailsSteps.clickExitButton();
+        orderDetailsSteps.verifyThatPopUpForVerificationIsDisplayed();
+        orderDetailsSteps.clickOkButtonOnVerificationPopUp();
+        orderModuleSteps.verifyThatStageFieldIsOnHold();
+        orderModuleSteps.verifyThatRelatedListsHaveCountsOfAddedItems();
     }
 }
