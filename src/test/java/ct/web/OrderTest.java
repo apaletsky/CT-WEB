@@ -12,7 +12,6 @@ import steps.*;
 
 @DisplayName("Order test")
 public class OrderTest extends BaseTest {
-
     LoginSteps loginSteps = new LoginSteps();
     HomeSteps homeSteps = new HomeSteps();
     OrderModuleSteps orderModuleSteps = new OrderModuleSteps();
