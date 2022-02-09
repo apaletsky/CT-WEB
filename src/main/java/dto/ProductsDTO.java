@@ -15,8 +15,6 @@ public class ProductsDTO {
         return Products;
     }
 
-    //https://medium.com/@lemonchen/jackson-json-to-inner-class-hava-collection-list-or-map-property-76b94df43532
-
     @Data
     public static class Product {
         @JsonProperty("name")
