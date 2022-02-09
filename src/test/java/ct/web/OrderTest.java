@@ -19,8 +19,6 @@ public class OrderTest extends BaseTest {
     OrderDetailsSteps orderDetailsSteps = new OrderDetailsSteps();
     DeliverySteps deliverySteps = new DeliverySteps();
 
-
-
     @Story("C53000 Создание заказа")
     @Description("C53000 Создание заказа")
     @DisplayName("C53000 Создание заказа")
