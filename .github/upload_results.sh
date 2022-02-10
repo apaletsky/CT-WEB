@@ -6,6 +6,6 @@ if [ "$current_branch" != "master" ]
 then
 version="fb-"$version
 fi
-aws s3 sync $1 "s3://ctwebtestreports/$version"
-echo "::warning::See report: http://ctwebtestreports.s3-website-us-east-1.amazonaws.com/$version/allureReport/index.html"
-echo "REPORT_URL=http://ctwebtestreports.s3-website-us-east-1.amazonaws.com/$version/allureReport/index.html" >> $GITHUB_ENV
+aws s3 sync $1 "s3://ctwebreports/$version"
+echo "::warning::See report: http://ctwebreports.s3-website-us-east-1.amazonaws.com/$version/allureReport/index.html"
+echo "REPORT_URL=http://ctwebreports.s3-website-us-east-1.amazonaws.com/$version/allureReport/index.html" >> $GITHUB_ENV
