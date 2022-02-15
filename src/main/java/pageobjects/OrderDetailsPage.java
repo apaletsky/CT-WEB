@@ -32,7 +32,7 @@ public class OrderDetailsPage {
     private final SelenideElement ADDBUTTON = $x("//*[@title='Add']");
     private final SelenideElement TOTALPRICE = $x("//*[text()='Total Price:']");
     private final SelenideElement TOTALDISCOUNT = $x("//*[text()='Total Discount:']");
-    private final SelenideElement ADDADDRESS = $x("//*[text()='Add Address']//following-sibling::div//input");
+    private final SelenideElement ADDADDRESS = $x("//*[text()='Add Address']//following-sibling::div//button/span");
     private final SelenideElement ADDDATE = $x("//*[@name='deliveryDate']");
     private final SelenideElement OKBUTTON = $x("//*[@title='OK']");
     private String DELIVERYADDRESS;
@@ -148,7 +148,7 @@ public class OrderDetailsPage {
     }
 
     public boolean verifyThatAddressPopulated(){
-        DELIVERYADDRESS = ADDADDRESS.getAttribute("value");
+        DELIVERYADDRESS = ADDADDRESS.getText();
         return DELIVERYADDRESS.length() != 0;
     }
 
